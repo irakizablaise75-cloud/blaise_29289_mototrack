@@ -22,7 +22,7 @@ The main objective is to design and implement an Oracle database with PL/SQL tha
 MotoTrack will be an Oracle database application implemented using SQL and PL/SQL in Oracle SQL Developer. It will store anonymized tracked-unit information, trip records, daily operating summaries, fuel expenses, electric battery/charging measures, and audit records. Stored procedures and functions will support data entry and calculations. SQL views and reports will summarize trip activity, operating costs and daily performance.
 
 ## Data Source
-The initial dataset is the *Nairobi Motorcycle Transit Comparison Dataset: Fuel vs. Electric Vehicle Performance Tracking (2023)* hosted on Mendeley Data: https://data.mendeley.com/datasets/nv3rkn24zv. The uploaded archive contains 126,067 trip rows and 2,718 daily-summary rows. It includes fuel and electric motorcycle groups, trip distance and duration, daily revenue, maintenance costs and energy-related measures. The dataset uses Kenyan Shillings and represents Nairobi, Kenya. Missing values are retained as NULL rather than assumed to be zero. The dataset does not provide separate rider names or motorcycle registration details. Additional local data would be needed before making Rwanda-specific claims.
+The initial dataset is the *Nairobi Motorcycle Transit Comparison Dataset: Fuel vs. Electric Vehicle Performance Tracking (2023)* hosted on Mendeley Data (DOI: 10.17632/nv3rkn24zv.1, licence CC BY 4.0): https://data.mendeley.com/datasets/nv3rkn24zv. The uploaded archive contains 126,067 trip rows and 2,718 daily-summary rows. It includes fuel and electric motorcycle groups, trip distance and duration, daily revenue, maintenance costs and energy-related measures. The dataset uses Kenyan Shillings and represents Nairobi, Kenya. Missing values are retained as NULL rather than assumed to be zero. The dataset does not provide separate rider names or motorcycle registration details. Additional local data would be needed before making Rwanda-specific claims.
 
 ## Planned Database Tables
 The preliminary model includes `RIDER_UNITS`, `TRIPS`, `DAILY_OPERATIONS`, `FUEL_DAILY_COSTS`, `ELECTRIC_DAILY_COSTS`, `MAINTENANCE_EVENTS`, and `AUDIT_LOG`. Raw import tables will be used for staging. The final design will be confirmed through normalization, an ERD and a data dictionary.
@@ -34,8 +34,10 @@ The implementation will demonstrate records, collections, implicit and explicit 
 The planned innovation is a database-native, menu-driven PL/SQL interface with operational reports that allow a user to run common MotoTrack tasks from SQL Developer. If the course requires an external interactive layer, the solution will be extended with Oracle APEX, which connects directly to the same Oracle database and calls the PL/SQL routines. The project calculates daily profit and operating cost per kilometre only when the required data is available.
 
 ## References
-1. [Complete the APA reference using the citation details shown on the Mendeley Data record after personally verifying it.]
-2. [Add two research papers you have personally read.]
-3. [Add one credible report/statistics source you have personally read.]
-4. [Add one existing-system source you have personally examined.]
-5. [Add one Oracle technical source you have personally consulted.]
+1. Ampersand Energy. (2025). *Ampersand opens battery network in push for global EV makers*. https://www.ampersand.energy/
+2. FIA Foundation. (2024). *A fare price: An investigation into the health costs of motorcycle taxi crashes in Kenya*. https://www.fiafoundation.org/resources/a-fare-price
+3. Kenya National Bureau of Statistics. (2022). *Economic Survey 2022*. Government of Kenya. https://www.knbs.or.ke/
+4. Mbutura, A., Kitetu, M., Stratford, H., & Booysen, M. J. (2025). Nairobi motorcycle transit comparison dataset: Fuel vs. electric vehicle performance tracking (2023). *Data in Brief, 61*, 111805. https://doi.org/10.1016/j.dib.2025.111805
+5. Mbutura, A., Manono, S., & Kitetu, M. (2026). From fuel to electric: Mobility patterns and perceptions of commercial motorcycle operators in Nairobi, Kenya, evidence from a before-and-after field study (2023). *African Transport Studies, 4*, 100092. https://doi.org/10.1016/j.aftran.2026.100092
+6. Oracle. (2023). *Oracle Database 21c documentation*. Oracle Corporation. https://docs.oracle.com/en/database/oracle/oracle-database/21/
+7. Stratford, H., & Booysen, M. J. (2025). The environmental and grid impact of boda boda electrification in Nairobi, Kenya. *World Electric Vehicle Journal, 16*(8), 427. https://doi.org/10.3390/wevj16080427
