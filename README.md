@@ -40,7 +40,7 @@ The dataset licence and citation must be verified on the Mendeley record before 
 
 ## Innovation
 
-The planned innovation is a database-native, menu-driven PL/SQL interface with operational reports that allow a user to run common MotoTrack tasks from SQL Developer. If the course requires an external interactive layer, the solution will be extended with Oracle APEX, which connects directly to the same Oracle database and calls the PL/SQL routines. Profit and operating cost per kilometre are calculated only when the required source values are available.
+The innovation is a live **Power BI analytics dashboard** connected to the MotoTrack Oracle database. Power BI reads the reporting views `VW_MOTOTRACK_DAILY_SUMMARY` and `VW_MOTOTRACK_TRIP_SUMMARY`, while all business rules and calculations remain in PL/SQL. The dashboard will show daily profit, operating cost per kilometre, fuel efficiency, revenue and maintenance trends by tracked unit, powertrain, cohort and date. Missing source values are displayed as blank, never as zero. The build plan and connection details are in `innovation/POWER_BI_PLAN.md`.
 
 ## Planned Database Tables
 
@@ -78,6 +78,8 @@ Raw staging tables mirror the six CSV files so that blank values can be preserve
 │   └── presentation/
 │       ├── presentation_outline.md
 │       └── MotoTrack_Phase0_Presentation.pptx
+├── innovation/
+│   └── POWER_BI_PLAN.md
 └── data/
     ├── original/
     └── processed/

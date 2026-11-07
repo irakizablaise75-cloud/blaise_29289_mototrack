@@ -31,7 +31,7 @@ The preliminary model includes `RIDER_UNITS`, `TRIPS`, `DAILY_OPERATIONS`, `FUEL
 The implementation will demonstrate records, collections, implicit and explicit cursors, BULK COLLECT, FORALL, stored procedures, functions, packages and exception handling. Triggers and an audit table will record selected database changes and enforce data-quality rules. Reports will use SQL views and PL/SQL routines.
 
 ## Innovation
-The planned innovation is a database-native, menu-driven PL/SQL interface with operational reports that allow a user to run common MotoTrack tasks from SQL Developer. If the course requires an external interactive layer, the solution will be extended with Oracle APEX, which connects directly to the same Oracle database and calls the PL/SQL routines. The project calculates daily profit and operating cost per kilometre only when the required data is available.
+The innovation is a live Power BI analytics dashboard connected to the MotoTrack Oracle database. Power BI reads the reporting views `VW_MOTOTRACK_DAILY_SUMMARY` and `VW_MOTOTRACK_TRIP_SUMMARY`, while all business rules and calculations remain in PL/SQL. The dashboard will show daily profit, operating cost per kilometre, fuel efficiency, revenue and maintenance trends by tracked unit, powertrain, cohort and date. Missing source values are displayed as blank, never as zero. The dashboard will be demonstrated live in Phase VII.
 
 ## References
 1. Ampersand Energy. (2025). *Ampersand opens battery network in push for global EV makers*. https://www.ampersand.energy/

@@ -14,7 +14,7 @@ The ready-to-present 12-slide deck is `MotoTrack_Phase0_Presentation.pptx` in th
 4. Main objective and specific objectives.
 5. Research findings, existing systems and identified gap.
 6. Dataset source, licence, size, columns, missing data and limitations.
-7. Proposed MotoTrack solution and innovation.
+7. Proposed MotoTrack solution and innovation: Power BI dashboard on the Oracle reporting views.
 8. ERD, normalization and database tables.
 9. PL/SQL implementation: procedures, functions, packages, cursors, records, collections, BULK COLLECT and FORALL.
 10. Triggers, restrictions and audit log.
