@@ -40,7 +40,7 @@ The dataset licence and citation must be verified on the Mendeley record before 
 
 ## Innovation
 
-The innovation is a live **Power BI analytics dashboard** connected to the MotoTrack Oracle database. Power BI reads the reporting views `VW_MOTOTRACK_DAILY_SUMMARY` and `VW_MOTOTRACK_TRIP_SUMMARY`, while all business rules and calculations remain in PL/SQL. The dashboard will show daily profit, operating cost per kilometre, fuel efficiency, revenue and maintenance trends by tracked unit, powertrain, cohort and date. Missing source values are displayed as blank, never as zero. The build plan and connection details are in `innovation/POWER_BI_PLAN.md`.
+The innovation is a live **Power BI analytics dashboard** connected to the MotoTrack Oracle database. Power BI reads the reporting views `VW_MOTOTRACK_DAILY_SUMMARY` and `VW_MOTOTRACK_TRIP_SUMMARY`, while all business rules and calculations remain in PL/SQL. The dashboard will show daily profit, operating cost per kilometre, fuel efficiency, revenue and maintenance trends by tracked unit, powertrain, cohort and date. Missing source values are displayed as blank, never as zero. The dashboard will be built and demonstrated in Phase VII.
 
 ## Planned Database Tables
 
@@ -78,8 +78,6 @@ Raw staging tables mirror the six CSV files so that blank values can be preserve
 │   └── presentation/
 │       ├── presentation_outline.md
 │       └── MotoTrack_Phase0_Presentation.pptx
-├── innovation/
-│   └── POWER_BI_PLAN.md
 └── data/
     ├── original/
     └── processed/
