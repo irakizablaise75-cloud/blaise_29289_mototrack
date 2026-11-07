@@ -1,5 +1,11 @@
 # MotoTrack Presentation – 10 to 12 Slide Outline
 
+**Student:** Irakiza Blaise  
+**Student ID:** 29289  
+**Course:** INSY 8311 – Database Development with PL/SQL  
+**Instructor:** Eric Maniraguha  
+**Repository:** https://github.com/irakizablaise75-cloud/blaise_29289_mototrack
+
 1. Title, student name/ID, course, instructor and repository link.
 2. Background and problem statement.
 3. Motivation and importance.
