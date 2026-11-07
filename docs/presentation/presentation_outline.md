@@ -6,6 +6,8 @@
 **Instructor:** Eric Maniraguha  
 **Repository:** https://github.com/irakizablaise75-cloud/blaise_29289_mototrack
 
+The ready-to-present 12-slide deck is `MotoTrack_Phase0_Presentation.pptx` in this folder. This file records the slide plan.
+
 1. Title, student name/ID, course, instructor and repository link.
 2. Background and problem statement.
 3. Motivation and importance.

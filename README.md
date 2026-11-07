@@ -28,7 +28,7 @@ MotoTrack is an Oracle database application implemented with SQL and PL/SQL in O
 
 ## Data Source
 
-The dataset is the *Nairobi Motorcycle Transit Comparison Dataset: Fuel vs. Electric Vehicle Performance Tracking (2023)*, hosted on Mendeley Data:
+The dataset is the *Nairobi Motorcycle Transit Comparison Dataset: Fuel vs. Electric Vehicle Performance Tracking (2023)*, hosted on Mendeley Data (DOI: `10.17632/nv3rkn24zv.1`, licence CC BY 4.0):
 
 https://data.mendeley.com/datasets/nv3rkn24zv
 
@@ -75,7 +75,9 @@ Raw staging tables mirror the six CSV files so that blank values can be preserve
 ├── docs/
 │   ├── research/research_log.md
 │   ├── proposal/proposal.md
-│   └── presentation/presentation_outline.md
+│   └── presentation/
+│       ├── presentation_outline.md
+│       └── MotoTrack_Phase0_Presentation.pptx
 └── data/
     ├── original/
     └── processed/
@@ -104,7 +106,12 @@ Raw staging tables mirror the six CSV files so that blank values can be preserve
 
 ## References
 
-1. Nairobi Motorcycle Transit Comparison Dataset: Fuel vs. Electric Vehicle Performance Tracking (2023). Mendeley Data. https://data.mendeley.com/datasets/nv3rkn24zv
-2. Oracle. (2023). *Oracle Database 21c Documentation*. https://docs.oracle.com/en/database/oracle/oracle-database/21/
+1. Ampersand Energy. (2025). *Ampersand opens battery network in push for global EV makers*. https://www.ampersand.energy/
+2. FIA Foundation. (2024). *A fare price: An investigation into the health costs of motorcycle taxi crashes in Kenya*. https://www.fiafoundation.org/resources/a-fare-price
+3. Kenya National Bureau of Statistics. (2022). *Economic Survey 2022*. Government of Kenya. https://www.knbs.or.ke/
+4. Mbutura, A., Kitetu, M., Stratford, H., & Booysen, M. J. (2025). Nairobi motorcycle transit comparison dataset: Fuel vs. electric vehicle performance tracking (2023). *Data in Brief, 61*, 111805. https://doi.org/10.1016/j.dib.2025.111805
+5. Mbutura, A., Manono, S., & Kitetu, M. (2026). From fuel to electric: Mobility patterns and perceptions of commercial motorcycle operators in Nairobi, Kenya, evidence from a before-and-after field study (2023). *African Transport Studies, 4*, 100092. https://doi.org/10.1016/j.aftran.2026.100092
+6. Oracle. (2023). *Oracle Database 21c documentation*. Oracle Corporation. https://docs.oracle.com/en/database/oracle/oracle-database/21/
+7. Stratford, H., & Booysen, M. J. (2025). The environmental and grid impact of boda boda electrification in Nairobi, Kenya. *World Electric Vehicle Journal, 16*(8), 427. https://doi.org/10.3390/wevj16080427
 
-The complete six-source research log, including research papers, reports, existing systems and technical sources, is maintained in `docs/research/research_log.md`.
+The complete research log, including the key finding and gap for each source, is maintained in `docs/research/research_log.md`.
