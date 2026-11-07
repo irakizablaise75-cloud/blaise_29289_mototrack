@@ -1,5 +1,9 @@
 # MotoTrack Research Log
 
+**Student:** Irakiza Blaise  
+**Student ID:** 29289  
+**Course:** INSY 8311 – Database Development with PL/SQL
+
 Complete at least six entries using sources you have personally opened and read. Do not invent findings or citations.
 
 | # | APA reference | Source type | URL | Key finding in your own words | Gap/relevance to MotoTrack |
