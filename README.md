@@ -36,25 +36,27 @@ The archive contains 126,067 trip rows and 2,718 daily-summary rows across six C
 
 Missing values are retained as `NULL` rather than treated as zero. The dataset does not provide separate rider names or motorcycle registration details, so the model uses **tracked units** instead of inventing personal or vehicle details. The dataset is not Rwanda-specific.
 
-The dataset licence and citation must be verified on the Mendeley record before submission. Attribution details are recorded in `docs/research/research_log.md`.
+The dataset licence and citation were verified on the Mendeley record. Attribution details are recorded in `01_documentation/phase_0_research_and_proposal/research/research_log.md`.
 
 ## Innovation
 
 The innovation is a live **Power BI analytics dashboard** connected to the MotoTrack Oracle database. Power BI reads the reporting views `VW_MOTOTRACK_DAILY_SUMMARY` and `VW_MOTOTRACK_TRIP_SUMMARY`, while all business rules and calculations remain in PL/SQL. The dashboard will show daily profit, operating cost per kilometre, fuel efficiency, revenue and maintenance trends by tracked unit, powertrain, cohort and date. Missing source values are displayed as blank, never as zero. The dashboard will be built and demonstrated in Phase VII.
 
-## Planned Database Tables
+## Logical Database Tables (Phase II, 3NF)
 
 | Table | Purpose |
 |---|---|
-| `RIDER_UNITS` | Anonymized source `user_id`, vehicle technology, study cohort and phase. |
+| `RIDER` | One anonymized rider, identified by `source_user_id`. |
+| `COHORT` | One study cohort with its phase and powertrain type. |
+| `RIDER_UNIT` | Junction between rider and cohort; the tracked unit. Unique on (`rider_id`, `cohort_name`). |
+| `DAILY_OPERATIONS` | One unit-day summary: distance, duration, idle time, revenue and maintenance total. |
+| `FUEL_DAILY_COSTS` | One-to-one fuel cost, unit price and litres for a fuel unit-day. |
+| `ELECTRIC_DAILY_COSTS` | One-to-one battery-swap cost and charging kWh for an electric unit-day. |
 | `TRIPS` | Trip-level records with timing, distance, duration, idle time, GPS and speed metrics. |
-| `DAILY_OPERATIONS` | Daily totals for distance, duration, idle time, revenue and maintenance. |
-| `FUEL_DAILY_COSTS` | Fuel cost, unit price and litres for fuel units. |
-| `ELECTRIC_DAILY_COSTS` | Battery-swap cost and charging kWh for electric units. |
-| `MAINTENANCE_EVENTS` | Separately recorded maintenance events. |
-| `AUDIT_LOG` | Insert, update and delete activity on selected business tables. |
+| `MAINTENANCE_EVENTS` | Separately recorded maintenance events (no source rows; future/manual). |
+| `AUDIT_LOG` | Append-only insert, update and delete audit trail. |
 
-Raw staging tables mirror the six CSV files so that blank values can be preserved during import. The final design will be confirmed through normalization to 3NF, an ERD and a data dictionary in Phase II.
+The logical design is in `docs/design/erd.png`, `docs/design/normalization.md` and `docs/design/data_dictionary.md`. It resolves the many-to-many rider/cohort relationship with `RIDER_UNIT` and splits fuel and electric costs into separate one-to-one tables. Raw staging tables mirror the six CSV files so that blank values are preserved during import. The current Phase IV physical script keeps cohort descriptors in `RIDER_UNITS` and stores `source_group` in child tables; Phase IV will align that script to this design or document the shortcut as a controlled denormalization.
 
 ## Planned PL/SQL Features
 
@@ -67,32 +69,95 @@ Raw staging tables mirror the six CSV files so that blank values can be preserve
 - Triggers that enforce data-quality rules and write to `AUDIT_LOG`.
 - SQL views and PL/SQL reports.
 
-## Repository Structure (Phase 0)
+## Repository Structure
 
 ```
 .
 ├── README.md
-├── docs/
-│   ├── research/research_log.md
-│   ├── proposal/proposal.md
-│   └── presentation/
-│       ├── presentation_outline.md
-│       └── MotoTrack_Phase0_Presentation.pptx
-└── data/
-    ├── original/
-    └── processed/
+├── 01_documentation/
+│   ├── phase_0_research_and_proposal/
+│   │   ├── Phase0_Research_and_Proposal.pdf
+│   │   ├── research/research_log.md
+│   │   ├── proposal/proposal.md
+│   │   └── presentation/
+│   │       ├── presentation_outline.md
+│   │       └── MotoTrack_Phase0_Presentation.pptx
+│   ├── phase_I_business_process_STUDENT_ONLY/
+│   │   ├── BLAISE_BPMN_Swimlane.svg
+│   │   ├── BLAISE_BPMN_Swimlane.png
+│   │   ├── BLAISE_BPMN_Swimlane.pdf
+│   │   ├── PHASE_I_BLAISE_BPMN_EXPLANATION.md
+│   │   ├── PHASE_I_BLAISE_BPMN_EXPLANATION.pdf
+│   │   └── README_PHASE_I.txt
+│   └── phase_II_design/
+│       ├── DATA_DICTIONARY_TEMPLATE.md
+│       ├── NORMALIZATION_WORKSHEET.md
+│       └── PROPOSED_ERD.md
+├── 03_sql/
+│   ├── 01_schema/
+│   ├── 02_staging/
+│   ├── 03_data_loading/
+│   ├── 04_packages/
+│   ├── 05_triggers/
+│   ├── 06_reports/
+│   └── 07_tests/
+├── 04_evidence/
+│   └── screenshots/
+├── 06_submission/
+│   └── SUBMISSION_CHECKLIST.md
+├── data/
+│   ├── raw/                 # Six untouched CSVs, READMEs and ZIP
+│   ├── original/            # Downloaded copy used for integrity checks
+│   ├── processed/           # Reserved for Phase IV cleaned output
+│   └── dataset_card.md      # Source, licence, size, quality and limitations
+└── docs/
+    └── design/
+        ├── erd.png          # Logical 3NF ERD (crow's-foot)
+        ├── erd.svg          # Editable vector source
+        ├── normalization.md # UNF -> 1NF -> 2NF -> 3NF with real rows
+        ├── data_dictionary.md
+        └── phase_ii_checklist.md
 ```
+
+Phase III database scripts (`02_database/`) and Phase VII innovation files (`05_innovation/`) will be added when those phases begin.
 
 ## Phase Status
 
 - [x] Phase 0 – Research, data source and project proposal
-- [ ] Phase I – Business process modeling
-- [ ] Phase II – Data sourcing and normalization
+- [ ] Phase I – Business process modeling (in progress; not pushed yet)
+- [x] Phase II – Data sourcing and normalization
 - [ ] Phase III – Database (PDB) creation
 - [ ] Phase IV – Tables and data loading
 - [ ] Phase V – PL/SQL development
 - [ ] Phase VI – Advanced programming and auditing
 - [ ] Phase VII – Documentation, innovation and final presentation
+
+## Phase II – Data Sourcing and Logical Design
+
+**Raw data:** `data/raw/` contains the six CSV files, two README files and the original ZIP. A SHA-256 check confirms that every raw file is byte-for-byte identical to the download in `data/original/`; no raw file was edited.
+
+**Deliverables:**
+
+- `data/dataset_card.md` — source, DOI, CC BY 4.0 licence, file sizes, record meaning, anonymization, missing values, duplicates, outliers, coverage gaps and limitations.
+- `docs/design/normalization.md` — UNF → 1NF → 2NF → 3NF with real rows, named dependencies and a single-record trace for the in-class demonstration.
+- `docs/design/erd.png` (and `erd.svg`) — logical ERD in crow's-foot notation.
+- `docs/design/data_dictionary.md` — every table, column, key, nullability, raw-field mapping and business rule.
+- `docs/design/phase_ii_checklist.md` — requirement-to-artefact map and final numeric verification.
+
+![MotoTrack logical 3NF ERD](docs/design/erd.png)
+
+**Logical model:** `RIDER`, `COHORT`, `RIDER_UNIT`, `DAILY_OPERATIONS`, `FUEL_DAILY_COSTS`, `ELECTRIC_DAILY_COSTS`, `TRIPS`, `MAINTENANCE_EVENTS` and `AUDIT_LOG`. `RIDER_UNIT` resolves the many-to-many between riders and cohorts. Fuel and electric costs are split into one-to-one children of `DAILY_OPERATIONS`.
+
+**Quality headlines:**
+
+- 128,785 data rows: 126,067 trips and 2,718 daily summaries; 119 distinct riders and 235 rider-cohort units.
+- 107 of 119 riders appear in more than one cohort, and all 9 electric riders also appear in the fuel cohorts; `user_id` alone is not a unit key.
+- 88 same-rider/same-date control/electric daily pairs, of which 3 match on every shared column; 3,655 duplicated trip keys across the control and electric files. They are valid separate units, not duplicates within a cohort; there are 0 exact duplicate rows inside any one file.
+- Cost fields are optional: 475 fuel daily rows have all fuel fields blank, 4 electric rows have all electric fields blank, and 48/88 battery-swap and 60/88 kWh values are missing.
+- 2,954 baseline, 2,288 control and 174 electric trips have at least one missing coordinate, by design.
+- 307 trips have `max_speed_kmh` below `avg_speed_kmh`, 19 have an average speed above 100 km/h, 97 have zero distance, and 1 trip's duration disagrees with its timestamps.
+- 172 baseline, 146 control and 20 electric unit-days are absent from the daily coverage; these are gaps, not zero-activity rows.
+- No free-text categorical fields exist, so there are no spelling variants; cohort, phase and powertrain come from the six file names.
 
 ## Dataset Facts
 
@@ -114,4 +179,4 @@ Raw staging tables mirror the six CSV files so that blank values can be preserve
 6. Oracle. (2023). *Oracle Database 21c documentation*. Oracle Corporation. https://docs.oracle.com/en/database/oracle/oracle-database/21/
 7. Stratford, H., & Booysen, M. J. (2025). The environmental and grid impact of boda boda electrification in Nairobi, Kenya. *World Electric Vehicle Journal, 16*(8), 427. https://doi.org/10.3390/wevj16080427
 
-The complete research log, including the key finding and gap for each source, is maintained in `docs/research/research_log.md`.
+The complete research log, including the key finding and gap for each source, is maintained in `01_documentation/phase_0_research_and_proposal/research/research_log.md`.

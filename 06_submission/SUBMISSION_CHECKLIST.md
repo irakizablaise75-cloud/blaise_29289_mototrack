@@ -1,0 +1,19 @@
+# Final Submission Checklist
+
+- [x] Topic availability checked and topic accepted by instructor.
+- [x] GitHub repository created with correct naming convention.
+- [x] README completed with name, student ID, problem, objectives, dataset, innovation and references.
+- [x] Six credible research sources personally read and logged.
+- [x] Dataset citation, authors, version and licence verified from Mendeley record.
+- [x] Phase 0 proposal completed and formatted to course requirements.
+- [x] Phase 0 presentation prepared.
+- [ ] Phase I diagram and explanation completed independently by student (AI prohibited) — in progress, not pushed yet.
+- [x] Phase II data sourcing, dataset card, normalization, ERD and data dictionary completed (`data/raw/`, `data/dataset_card.md`, `docs/design/`).
+- [ ] Phase III Oracle PDB created and tested.
+- [ ] Phase IV tables, constraints and data loading tested.
+- [ ] Phase V required PL/SQL features implemented and demonstrated.
+- [ ] Phase VI triggers, business restrictions and audit logs tested.
+- [ ] Innovation requirement confirmed with instructor and demonstrated.
+- [ ] Screenshots and test evidence added.
+- [ ] Final documentation and presentation completed.
+- [ ] All code committed to GitHub.
