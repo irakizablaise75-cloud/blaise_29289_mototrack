@@ -82,17 +82,13 @@ The logical design is in `docs/design/erd.png`, `docs/design/normalization.md` a
 │   │   └── presentation/
 │   │       ├── presentation_outline.md
 │   │       └── MotoTrack_Phase0_Presentation.pptx
-│   ├── phase_I_business_process_STUDENT_ONLY/
-│   │   ├── BLAISE_BPMN_Swimlane.svg
-│   │   ├── BLAISE_BPMN_Swimlane.png
-│   │   ├── BLAISE_BPMN_Swimlane.pdf
-│   │   ├── PHASE_I_BLAISE_BPMN_EXPLANATION.md
-│   │   ├── PHASE_I_BLAISE_BPMN_EXPLANATION.pdf
-│   │   └── README_PHASE_I.txt
-│   └── phase_II_design/
-│       ├── DATA_DICTIONARY_TEMPLATE.md
-│       ├── NORMALIZATION_WORKSHEET.md
-│       └── PROPOSED_ERD.md
+│   └── phase_I_business_process_STUDENT_ONLY/
+│       ├── BLAISE_BPMN_Swimlane.svg
+│       ├── BLAISE_BPMN_Swimlane.png
+│       ├── BLAISE_BPMN_Swimlane.pdf
+│       ├── PHASE_I_BLAISE_BPMN_EXPLANATION.md
+│       ├── PHASE_I_BLAISE_BPMN_EXPLANATION.pdf
+│       └── README_PHASE_I.txt
 ├── 03_sql/
 │   ├── 01_schema/
 │   ├── 02_staging/

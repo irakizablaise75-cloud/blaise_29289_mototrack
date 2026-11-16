@@ -69,7 +69,6 @@ This checklist maps each Phase II requirement to the artefact that satisfies it.
 | `docs/design/erd.svg` | Editable vector source for the ERD |
 | `docs/design/data_dictionary.md` | Full logical data dictionary |
 | `docs/design/phase_ii_checklist.md` | This requirement-to-artefact map |
-| `01_documentation/phase_II_design/*` | Working drafts updated to point to the final deliverables |
 | `README.md` | Phase II summary and links |
 | `06_submission/SUBMISSION_CHECKLIST.md` | Submission tracker updated for Phase II |
 
