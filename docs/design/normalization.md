@@ -56,6 +56,24 @@ The filename supplies three descriptors that are not columns in the CSV:
 | `transition-control-fuel-motorcycle-*` | `CONTROL` | `TRANSITION` | `FUEL` |
 | `transition-treatment-electric-motorcycle-*` | `TREATMENT` | `TRANSITION` | `ELECTRIC` |
 
+### 2.1 Table-by-table normalization summary
+
+The table below is the index to the whole worksheet. For each final table it states the normal form in which the table first appears, the relation it was split from, the dependency that justified the split, and the key the table has after the split. It answers the question "how was this table normalized?" in one row per table.
+
+| Final table | First appears | Split from | Dependency removed / rule applied | Key after the split |
+|---|---|---|---|---|
+| `DAILY_OPERATIONS` | 1NF | `MOTOTRACK_DAY_UNF` | Mixed grain: the daily aggregate cannot also hold a list of trips | (`cohort_name`, `user_id`, `operating_date`) → (`unit_id`, `operating_date`) |
+| `TRIPS` | 1NF | `MOTOTRACK_DAY_UNF.trip_list` | Repeating group: one unit-day contains many trips | (`cohort_name`, `user_id`, `start_ts`, `end_ts`, `distance_km`) → (`unit_id`, `start_ts`, `end_ts`, `distance_km`) |
+| `RIDER_UNIT` | 2NF | `DAILY_OPERATIONS`, `TRIPS` | Partial dependency: rider and cohort descriptors depend on part of the composite key, not on the date or trip | `unit_id`; UK (`rider_id`, `cohort_name`) |
+| `RIDER` | 3NF | `RIDER_UNIT.source_user_id` | Transitive dependency: `source_user_id → rider identity` | `rider_id`; UK `source_user_id` |
+| `COHORT` | 3NF | `RIDER_UNIT` | Transitive dependency: `cohort_name → study_phase, powertrain_type` | `cohort_name` |
+| `FUEL_DAILY_COSTS` | 3NF | `DAILY_OPERATIONS` | Conditional/transitive dependency: `powertrain_type → fuel_*` attributes | `daily_id` (PK and FK) |
+| `ELECTRIC_DAILY_COSTS` | 3NF | `DAILY_OPERATIONS` | Conditional/transitive dependency: `powertrain_type → battery_swap_cost_kes, kwh_charging` | `daily_id` (PK and FK) |
+| `MAINTENANCE_EVENTS` | 3NF (logical extension) | `DAILY_OPERATIONS.maintenance_kes` | Aggregate/event conflict: a daily total must not be stored as individual events | `maintenance_event_id` |
+| `AUDIT_LOG` | Not source-derived | — | Operational requirement, not a source relation; no functional dependency from the CSVs | `audit_id` |
+
+**How to read the dependency column.** A functional dependency `X → Y` means that knowing `X` determines `Y` uniquely. At 2NF the determinant is only *part* of the composite key, which is why those attributes move into `RIDER_UNIT`. At 3NF the determinant is a *non-key* attribute (`cohort_name` or `powertrain_type`), which is why those attributes move into `COHORT` and the two energy-cost tables. A repeating group is not a functional dependency at all: it is a set of values per key, which is why it becomes the child table `TRIPS` already at 1NF.
+
 ## 3. Unnormalised form (UNF)
 
 ### 3.1 Structure
@@ -77,15 +95,15 @@ MOTOTRACK_DAY_UNF(
 
 ### 3.2 Real UNF rows
 
-The `trip_list` column is abbreviated here; the actual trips are shown in Section 4.2. `—` means the column does not apply to that powertrain; blank means the source cell is empty (`NULL`).
+The `trip_list` column is abbreviated here to the **first three real trips** of each listed unit-day, copied from the matching trip CSV (start time–end time and distance). The full trip rows are shown in Section 4.2. `—` means the column does not apply to that powertrain; blank means the source cell is empty (`NULL`).
 
 | source_file | user_id | date | distance_km | duration_min | idle_time_min | revenue_kes | maintenance_kes | fuel_cost_kes | fuel_unit_cost_kes_per_l | fuel_amount_l | battery_swap_cost_kes | kwh_charging | trip_list (repeating) |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| baseline fuel daily | 579236 | 2023-11-13 | 129.44 | 267.59 | 17.78 | NULL | NULL | NULL | NULL | NULL | — | — | 11:54–11:58 1.33 km; 12:00–12:20 9.34 km; 12:20–12:22 0.52 km; … |
-| baseline fuel daily | 579236 | 2023-11-14 | 113.02 | 232.36 | 10.87 | 1400.00 | 0.00 | 300.00 | 214.30 | 1.40 | — | — | 11:00–11:08 2.10 km; 11:20–11:45 10.20 km; … |
-| baseline fuel daily | 627618 | 2023-11-14 | 55.56 | 134.38 | 10.15 | 1500.00 | 0.00 | 650.00 | 214.30 | 3.03 | — | — | 13:02–13:09 1.80 km; 13:15–13:36 8.40 km; … |
-| control fuel daily | 579236 | 2023-12-10 | 121.31 | 227.43 | 11.16 | NULL | NULL | NULL | NULL | NULL | — | — | 11:06–11:31 15.57 km; 12:11–12:16 2.21 km; … |
-| electric treatment daily | 579236 | 2023-12-11 | 119.74 | 245.78 | 11.64 | 870.00 | 0.00 | — | — | — | 176.00 | NULL | 10:58–11:20 8.10 km; 11:35–12:02 9.70 km; … |
+| baseline fuel daily | 579236 | 2023-11-13 | 129.44 | 267.59 | 17.78 | NULL | NULL | NULL | NULL | NULL | — | — | 11:54–11:58 1.33 km; 12:00–12:20 9.34 km; 12:20–12:22 0.52 km; … (53 trips) |
+| baseline fuel daily | 579236 | 2023-11-14 | 113.02 | 232.36 | 10.87 | 1400.00 | 0.00 | 300.00 | 214.30 | 1.40 | — | — | 10:58–11:23 14.56 km; 11:30–11:34 1.37 km; 11:34–11:36 0.72 km; … (35 trips) |
+| baseline fuel daily | 627618 | 2023-11-14 | 55.56 | 134.38 | 10.15 | 1500.00 | 0.00 | 650.00 | 214.30 | 3.03 | — | — | 09:21–09:23 0.41 km; 09:23–09:25 0.69 km; 09:25–09:28 1.39 km; … (42 trips) |
+| control fuel daily | 579236 | 2023-12-10 | 121.31 | 227.43 | 11.16 | NULL | NULL | NULL | NULL | NULL | — | — | 11:06:51–11:31:01 15.57 km; 12:11:25–12:16:54 2.21 km; 12:45:26–12:50:34 2.52 km; … (33 trips) |
+| electric treatment daily | 579236 | 2023-12-11 | 119.74 | 245.78 | 11.64 | 870.00 | 0.00 | — | — | — | 176.00 | NULL | 11:23:56–11:44:54 14.13 km; 11:44:55–11:47:03 0.61 km; 14:13:32–14:15:10 0.51 km; … (42 trips) |
 
 ### 3.3 UNF problems
 
@@ -128,7 +146,7 @@ The fuel and electric columns are still atomic alternatives at 1NF. They are spl
 | BASELINE | 579236 | 2023-11-13 12:24:00 | 2023-11-13 12:33:00 | 9.48 | 4.52 | 0.47 | -1.280607 | 36.827370 | -1.257552 | 36.802875 | 28.61 | 30.10 | 47.0 |
 | TREATMENT | 579236 | 2023-12-10 11:06:51 | 2023-12-10 11:31:01 | 24.17 | 15.57 | 0.35 | NULL | NULL | -1.257490 | 36.803090 | 38.65 | 39.22 | 59.0 |
 
-**Dependency removed:** the repeating group of trips inside a unit-day was removed by creating one `TRIPS` row per trip; the daily aggregates stay in `DAILY_OPERATIONS`.
+**Dependency removed (repeating group):** `trip_list` was a *set* of trips stored inside one unit-day, not a single-valued fact. Splitting it into `TRIPS` (one row per trip, key (`cohort_name`, `user_id`, `start_ts`, `end_ts`, `distance_km`)) leaves `DAILY_OPERATIONS` holding only atomic daily aggregates. Both tables are now in 1NF.
 
 ## 5. Second Normal Form (2NF)
 
@@ -166,6 +184,7 @@ This is also a real-data finding: `source_user_id` alone cannot identify a unit 
 | D003 | U004 | 2023-11-14 | 55.56 | 134.38 | 10.15 | 1500.00 | 0.00 | 650.00 | 214.30 | 3.03 | — | — |
 | D004 | U003 | 2023-12-11 | 119.74 | 245.78 | 11.64 | 870.00 | 0.00 | — | — | — | 176.00 | NULL |
 | D005 | U003 | 2023-12-12 | 126.96 | 268.68 | 15.89 | 1750.00 | 100.00 | — | — | — | 370.00 | NULL |
+| D006 | U003 | 2023-12-13 | 67.08 | 152.66 | 7.25 | 1000.00 | 50.00 | — | — | — | 167.00 | NULL |
 
 **TRIPS after 2NF** (unit descriptors removed; trip measures depend on the trip key):
 
@@ -176,17 +195,18 @@ This is also a real-data finding: `source_user_id` alone cannot identify a unit 
 | T003 | U001 | 2023-11-13 12:20:00 | 2023-11-13 12:22:00 | 1.80 | 0.52 | 0.17 | -1.282285 | 36.831860 | -1.280667 | 36.827493 | 17.33 | 19.14 | 29.0 |
 | T004 | U003 | 2023-12-10 11:06:51 | 2023-12-10 11:31:01 | 24.17 | 15.57 | 0.35 | NULL | NULL | -1.257490 | 36.803090 | 38.65 | 39.22 | 59.0 |
 
-**Dependency removed:** the partial dependencies of `powertrain_type`, `study_phase` and the unit descriptors on only part of the composite unit-day key were removed by moving them to `RIDER_UNIT`; daily measures now depend on the full (`unit_id`, `operating_date`) key, and trip measures depend on the trip key.
+**Dependency removed (partial dependency):** in the 1NF key (`cohort_name`, `user_id`, `operating_date`), `cohort_name → study_phase, powertrain_type` and `user_id → rider identity` hold without the `operating_date` part. Moving those attributes into `RIDER_UNIT` leaves `DAILY_OPERATIONS` with the full-key dependency (`unit_id`, `operating_date`) → daily measures and `TRIPS` with (unit, start, end, distance) → trip measures. Both tables are now in 2NF.
 
 ## 6. Third Normal Form (3NF)
 
 ### 6.1 Rule and change
 
-3NF requires 2NF plus no transitive dependency of a non-key attribute on another non-key attribute. Three transitive/conditional dependencies remain after 2NF:
+3NF requires 2NF plus no transitive dependency of a non-key attribute on another non-key attribute. Four transitive/conditional dependencies remain after 2NF:
 
-1. **Cohort descriptors depend on the cohort.** In `RIDER_UNIT`, `powertrain_type` and `study_phase` depend on `cohort_name`, not directly on `unit_id`. Move them to `COHORT(cohort_name, study_phase, powertrain_type)`.
-2. **Energy costs depend on the powertrain.** In `DAILY_OPERATIONS`, the applicable fuel or electric cost group depends on the unit's powertrain. This is a conditional/transitive dependency (`daily_id → unit_id → cohort_name → powertrain_type → energy attributes`) and produces many NULLs. Split into `FUEL_DAILY_COSTS(daily_id, fuel_cost_kes, fuel_unit_cost_kes_per_l, fuel_amount_l)` and `ELECTRIC_DAILY_COSTS(daily_id, battery_swap_cost_kes, kwh_charging)`, both one-to-one with `DAILY_OPERATIONS`.
-3. **`source_group` is derivable.** The source-group label attached to each daily/trip row is derivable from `COHORT` (`cohort_name`, `study_phase`, `powertrain_type`). Storing it in every child row would be redundant. It is omitted from the logical 3NF design.
+1. **Rider identity depends on the source identifier.** In `RIDER_UNIT`, `source_user_id` determines the rider, not the unit. Move it to `RIDER(rider_id, source_user_id)` and keep only `rider_id` in the junction.
+2. **Cohort descriptors depend on the cohort.** In `RIDER_UNIT`, `powertrain_type` and `study_phase` depend on `cohort_name`, not directly on `unit_id`. Move them to `COHORT(cohort_name, study_phase, powertrain_type)`.
+3. **Energy costs depend on the powertrain.** In `DAILY_OPERATIONS`, the applicable fuel or electric cost group depends on the unit's powertrain. This is a conditional/transitive dependency (`daily_id → unit_id → cohort_name → powertrain_type → energy attributes`) and produces many NULLs. Split into `FUEL_DAILY_COSTS(daily_id, fuel_cost_kes, fuel_unit_cost_kes_per_l, fuel_amount_l)` and `ELECTRIC_DAILY_COSTS(daily_id, battery_swap_cost_kes, kwh_charging)`, both one-to-one with `DAILY_OPERATIONS`.
+4. **`source_group` is derivable.** The source-group label attached to each daily/trip row is derivable from `COHORT` (`cohort_name`, `study_phase`, `powertrain_type`). Storing it in every child row would be redundant. It is omitted from the logical 3NF design.
 
 The many-to-many between riders and cohorts is resolved by `RIDER_UNIT`: a rider can participate in many cohorts, a cohort has many riders, and `RIDER_UNIT` is the junction. `RIDER` holds the anonymised rider identifier; `COHORT` holds the study descriptors.
 
@@ -227,6 +247,7 @@ The many-to-many between riders and cohorts is resolved by `RIDER_UNIT`: a rider
 | D003 | U004 | 2023-11-14 | 55.56 | 134.38 | 10.15 | 1500.00 | 0.00 |
 | D004 | U003 | 2023-12-11 | 119.74 | 245.78 | 11.64 | 870.00 | 0.00 |
 | D005 | U003 | 2023-12-12 | 126.96 | 268.68 | 15.89 | 1750.00 | 100.00 |
+| D006 | U003 | 2023-12-13 | 67.08 | 152.66 | 7.25 | 1000.00 | 50.00 |
 
 **FUEL_DAILY_COSTS** (one-to-one with fuel daily operations; 2,630 rows in total; blanks become NULL):
 
@@ -242,7 +263,7 @@ The many-to-many between riders and cohorts is resolved by `RIDER_UNIT`: a rider
 |---|---:|---:|
 | D004 | 176.00 | NULL |
 | D005 | 370.00 | NULL |
-| D006 | 147.00 | NULL |
+| D006 | 167.00 | NULL |
 
 **TRIPS** (126,067 rows in total; unit descriptors removed; coordinates optional):
 
@@ -259,11 +280,25 @@ The daily dataset supplies only an aggregate `maintenance_kes`. It does not cont
 
 **Dependencies removed at 3NF:**
 
-- Moved `study_phase` and `powertrain_type` from `RIDER_UNIT` to `COHORT`, removing the transitive dependency `cohort_name → study_phase/powertrain_type`.
-- Moved fuel-specific attributes to `FUEL_DAILY_COSTS` and electric-specific attributes to `ELECTRIC_DAILY_COSTS`, removing the conditional/transitive dependency of energy costs on the unit's powertrain.
+- Moved `study_phase` and `powertrain_type` from `RIDER_UNIT` to `COHORT`, removing the transitive dependency `cohort_name → study_phase, powertrain_type`.
+- Moved `source_user_id` from `RIDER_UNIT` to `RIDER`, removing the transitive dependency `source_user_id → rider identity`; `RIDER_UNIT` now holds only the two keys that define a unit.
+- Moved fuel-specific attributes to `FUEL_DAILY_COSTS` and electric-specific attributes to `ELECTRIC_DAILY_COSTS`, removing the conditional/transitive dependency `powertrain_type → energy-cost attributes`.
 - Resolved the many-to-many between `RIDER` and `COHORT` with the `RIDER_UNIT` junction table.
 - Removed `source_group` from child tables because it is derivable from `COHORT`.
 - Kept `maintenance_kes` in `DAILY_OPERATIONS` as the daily aggregate and separated event-level maintenance into `MAINTENANCE_EVENTS`.
+
+### 6.3 Column movement in the final split
+
+This table follows the actual columns from their 2NF home to their 3NF home. It is the column-level companion to the table-level summary in Section 2.1.
+
+| Column(s) | Held at 2NF in | Held at 3NF in | Dependency that forced the move |
+|---|---|---|---|
+| `study_phase`, `powertrain_type` | `RIDER_UNIT` | `COHORT` | `cohort_name → study_phase, powertrain_type` |
+| `source_user_id` | `RIDER_UNIT` | `RIDER` | `source_user_id → rider identity` |
+| `fuel_cost_kes`, `fuel_unit_cost_kes_per_l`, `fuel_amount_l` | `DAILY_OPERATIONS` (wide, mostly NULL) | `FUEL_DAILY_COSTS` | `powertrain_type → fuel_*`; applies only to `FUEL` |
+| `battery_swap_cost_kes`, `kwh_charging` | `DAILY_OPERATIONS` (wide, mostly NULL) | `ELECTRIC_DAILY_COSTS` | `powertrain_type → electric_*`; applies only to `ELECTRIC` |
+| `source_group` (physical label) | Child rows | Not stored | Derivable from `COHORT`; redundant |
+| `maintenance_kes` | `DAILY_OPERATIONS` | Stays in `DAILY_OPERATIONS` | It is a daily aggregate, not a non-key attribute of an event; events are a separate future table |
 
 ## 7. Final 3NF schema
 

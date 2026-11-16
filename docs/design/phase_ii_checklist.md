@@ -22,7 +22,8 @@ This checklist maps each Phase II requirement to the artefact that satisfies it.
 | Second Normal Form (2NF) | `docs/design/normalization.md` Section 5 | Partial dependency of cohort/phase/powertrain on part of the unit-day key removed into `RIDER_UNIT` |
 | Third Normal Form (3NF) | `docs/design/normalization.md` Section 6 | Transitive dependencies removed into `COHORT`, `FUEL_DAILY_COSTS` and `ELECTRIC_DAILY_COSTS` |
 | Real sample rows at each step | `docs/design/normalization.md` Sections 3.2, 4.2, 5.2, 6.2 | Five UNF rows; daily and trip rows at 1NF; unit/daily/trip rows at 2NF; rider/cohort/unit/daily/cost/trip rows at 3NF |
-| Named dependency removed at each split | `docs/design/normalization.md` Sections 4.2, 5.2, 6.2 | Explicit “Dependency removed” paragraphs after each normal form |
+| Named dependency removed at each split | `docs/design/normalization.md` Sections 4.2, 5.2, 6.2 | Explicit “Dependency removed” paragraphs after each normal form, using functional-dependency notation |
+| Table-by-table normalization summary | `docs/design/normalization.md` Sections 2.1 and 6.3 | One row per final table with the form it appears in, the split, the dependency removed and the resulting key; column-movement table for the final split |
 | In-class single-record trace | `docs/design/normalization.md` Section 11 | One daily record (unit `579236`, `2023-11-14`) and its 35 trips traced into `RIDER`, `COHORT`, `RIDER_UNIT`, `DAILY_OPERATIONS`, `FUEL_DAILY_COSTS` and `TRIPS`; non-applicable tables named |
 | Many-to-many relationship resolved with a junction table | `RIDER_UNIT` in the ERD, normalization and data dictionary | `RIDER_UNIT` unique on (`rider_id`, `cohort_name`); 9 riders in all 3 cohorts, 98 in 2, 12 in 1 = 235 units |
 | Logical ERD in crow’s-foot notation | `docs/design/erd.png` (source: `docs/design/erd.svg`) | 9 entities, PK/FK/UK badges, cardinality markers, legend and explanatory notes |
