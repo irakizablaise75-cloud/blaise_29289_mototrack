@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title description">
+  <title id="title">MotoTrack daily-data entity relationship diagram (crow's-foot notation)</title>
+  <desc id="description">Logical MotoTrack schema in crow's-foot notation: riders, source groups, daily operations across three study groups, maintenance types, optional maintenance events, audit log, and three staging tables. One-to-many relationships: source group and rider to daily operations; rider and maintenance type to maintenance events.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#64748b"/>
+    </marker>
+    <style>
+      text { font-family: Arial, sans-serif; fill: #0f172a; }
+      .title { font-size: 30px; font-weight: 700; }
+      .subtitle { font-size: 16px; fill: #475569; }
+      .entity { fill: #ffffff; stroke: #334155; stroke-width: 2; rx: 12; }
+      .entity-title { fill: #dbeafe; stroke: #334155; stroke-width: 2; rx: 12; }
+      .entity-name { font-size: 20px; font-weight: 700; }
+      .stage-title { font-size: 15px; font-weight: 700; }
+      .field { font-size: 15px; }
+      .note { font-size: 14px; fill: #475569; }
+      .relation { stroke: #334155; stroke-width: 2.5; fill: none; }
+      .crowsfoot { stroke: #334155; stroke-width: 2.5; fill: none; }
+      .dataflow { stroke: #64748b; stroke-width: 2; stroke-dasharray: 8 6; fill: none; }
+      .cardinality { font-size: 14px; font-weight: 700; fill: #334155; }
+      .legend { font-size: 15px; fill: #334155; }
+    </style>
+  </defs>
+  <rect width="1600" height="1100" fill="#f8fafc"/>
+  <text class="title" x="60" y="58">MotoTrack — Daily Data ERD (crow's-foot notation)</text>
+  <text class="subtitle" x="60" y="88">Daily summaries only · 2,718 source rows · baseline fuel, transition control fuel, transition electric</text>
+
+  <!-- RIDERS -->
+  <rect class="entity" x="60" y="150" width="300" height="160"/>
+  <rect class="entity-title" x="60" y="150" width="300" height="48"/>
+  <text class="entity-name" x="80" y="181">RIDERS</text>
+  <text class="field" x="80" y="228">PK  rider_id</text>
+  <text class="field" x="80" y="258">UK  rider_code</text>
+  <text class="field" x="80" y="288">created_at</text>
+
+  <!-- SOURCE_GROUP -->
+  <rect class="entity" x="60" y="360" width="300" height="210"/>
+  <rect class="entity-title" x="60" y="360" width="300" height="48"/>
+  <text class="entity-name" x="80" y="391">SOURCE_GROUP</text>
+  <text class="field" x="80" y="438">PK  group_code</text>
+  <text class="field" x="80" y="466">UK  group_name</text>
+  <text class="field" x="80" y="494">study_phase · powertrain</text>
+  <text class="field" x="80" y="522">control_role</text>
+  <text class="field" x="80" y="550">start_date · end_date</text>
+
+  <!-- MAINTENANCE_TYPE -->
+  <rect class="entity" x="60" y="620" width="300" height="160"/>
+  <rect class="entity-title" x="60" y="620" width="300" height="48"/>
+  <text class="entity-name" x="80" y="651">MAINTENANCE_TYPE</text>
+  <text class="field" x="80" y="696">PK  type_code</text>
+  <text class="field" x="80" y="724">UK  type_name</text>
+  <text class="field" x="80" y="752">description</text>
+
+  <!-- DAILY_OPERATIONS -->
+  <rect class="entity" x="520" y="140" width="560" height="520"/>
+  <rect class="entity-title" x="520" y="140" width="560" height="48"/>
+  <text class="entity-name" x="540" y="171">DAILY_OPERATIONS</text>
+  <text class="field" x="545" y="218">PK  daily_id</text>
+  <text class="field" x="545" y="246">FK  rider_id → RIDERS.rider_id</text>
+  <text class="field" x="545" y="274">FK  source_group → SOURCE_GROUP.group_code</text>
+  <text class="field" x="545" y="302">UK  (rider_id, source_group, operating_date)</text>
+  <text class="field" x="545" y="340">operating_date · distance_km</text>
+  <text class="field" x="545" y="368">duration_min · idle_time_min</text>
+  <text class="field" x="545" y="396">revenue_kes · maintenance_kes</text>
+  <text class="field" x="545" y="434">Fuel groups: fuel_cost_kes · fuel_unit_cost_kes_per_l</text>
+  <text class="field" x="565" y="462">fuel_amount_l</text>
+  <text class="field" x="545" y="490">Electric group: battery_swap_cost_kes · kwh_charging</text>
+  <text class="field" x="545" y="528">created_at</text>
+  <text class="note" x="545" y="580">Profit is derived only when revenue and applicable cost inputs</text>
+  <text class="note" x="545" y="602">are complete; source blanks remain NULL.</text>
+
+  <!-- MAINTENANCE_EVENTS -->
+  <rect class="entity" x="520" y="720" width="560" height="180"/>
+  <rect class="entity-title" x="520" y="720" width="560" height="48"/>
+  <text class="entity-name" x="540" y="751">MAINTENANCE_EVENTS</text>
+  <text class="field" x="545" y="796">PK  maintenance_event_id</text>
+  <text class="field" x="545" y="822">FK  rider_id → RIDERS.rider_id</text>
+  <text class="field" x="545" y="848">FK  maintenance_type → MAINTENANCE_TYPE.type_code</text>
+  <text class="field" x="545" y="874">maintenance_date · amount_kes · odometer_km</text>
+
+  <!-- AUDIT_LOG -->
+  <rect class="entity" x="520" y="940" width="560" height="130"/>
+  <rect class="entity-title" x="520" y="940" width="560" height="48"/>
+  <text class="entity-name" x="540" y="971">AUDIT_LOG</text>
+  <text class="field" x="545" y="1008">PK  audit_id · table_name · record_key · action_type</text>
+  <text class="field" x="545" y="1034">changed_by · changed_at · old_summary · new_summary</text>
+  <text class="note" x="545" y="1058">Standalone audit record; trigger-written, no FK.</text>
+
+  <!-- STAGING -->
+  <rect class="entity" x="1140" y="140" width="400" height="150"/>
+  <rect class="entity-title" x="1140" y="140" width="400" height="48"/>
+  <text class="stage-title" x="1160" y="171">STG_DAILY_BASELINE_FUEL</text>
+  <text class="field" x="1160" y="218">Raw text staging · 1,480 rows</text>
+  <text class="note" x="1160" y="253">Source: baseline-fuel daily CSV</text>
+
+  <rect class="entity" x="1140" y="330" width="400" height="150"/>
+  <rect class="entity-title" x="1140" y="330" width="400" height="48"/>
+  <text class="stage-title" x="1160" y="361">STG_DAILY_TRANSITION_FUEL</text>
+  <text class="field" x="1160" y="408">Raw text staging · 1,150 rows</text>
+  <text class="note" x="1160" y="443">Source: transition-control daily CSV</text>
+
+  <rect class="entity" x="1140" y="520" width="400" height="150"/>
+  <rect class="entity-title" x="1140" y="520" width="400" height="48"/>
+  <text class="stage-title" x="1160" y="551">STG_DAILY_TRANSITION_ELECTRIC</text>
+  <text class="field" x="1160" y="598">Raw text staging · 88 rows</text>
+  <text class="note" x="1160" y="633">Source: transition-treatment daily CSV</text>
+
+  <!-- Relationship: SOURCE_GROUP 1 : 0..* DAILY_OPERATIONS -->
+  <path class="relation" d="M360 460 H520"/>
+  <path class="crowsfoot" d="M372 452 V468"/>
+  <path class="crowsfoot" d="M508 460 L520 451 M508 460 L520 460 M508 460 L520 469"/>
+  <text class="cardinality" x="394" y="448">1</text>
+  <text class="cardinality" x="484" y="448">0..*</text>
+
+  <!-- Relationship: RIDERS 1 : 0..* DAILY_OPERATIONS -->
+  <path class="relation" d="M360 230 H520"/>
+  <path class="crowsfoot" d="M372 222 V238"/>
+  <path class="crowsfoot" d="M508 230 L520 221 M508 230 L520 230 M508 230 L520 239"/>
+  <text class="cardinality" x="394" y="218">1</text>
+  <text class="cardinality" x="484" y="218">0..*</text>
+  <text class="subtitle" x="392" y="285">has daily rows</text>
+
+  <!-- Relationship: MAINTENANCE_TYPE 1 : 0..* MAINTENANCE_EVENTS -->
+  <path class="relation" d="M360 700 H430 V770 H520"/>
+  <path class="crowsfoot" d="M372 692 V708"/>
+  <path class="crowsfoot" d="M508 770 L520 761 M508 770 L520 770 M508 770 L520 779"/>
+  <text class="cardinality" x="394" y="688">1</text>
+  <text class="cardinality" x="486" y="758">0..*</text>
+
+  <!-- Relationship: RIDERS 1 : 0..* MAINTENANCE_EVENTS -->
+  <path class="relation" d="M60 260 H35 V850 H520"/>
+  <path class="crowsfoot" d="M48 252 V268"/>
+  <path class="crowsfoot" d="M508 850 L520 841 M508 850 L520 850 M508 850 L520 859"/>
+  <text class="cardinality" x="44" y="240">1</text>
+  <text class="cardinality" x="486" y="838">0..*</text>
+
+  <!-- Dataflow: staging -> daily operations -->
+  <path class="dataflow" d="M1140 215 H1100 V300 H1080" marker-end="url(#arrow)"/>
+  <path class="dataflow" d="M1140 405 H1110 V360 H1080" marker-end="url(#arrow)"/>
+  <path class="dataflow" d="M1140 595 H1120 V420 H1080" marker-end="url(#arrow)"/>
+  <text class="note" x="1088" y="712">CSV import</text>
+
+  <!-- Dataflow: daily operations -> audit log -->
+  <path class="dataflow" d="M800 660 V940" marker-end="url(#arrow)"/>
+  <text class="note" x="815" y="800">trigger</text>
+
+  <!-- Legend -->
+  <path class="relation" d="M60 1082 H130"/>
+  <path class="crowsfoot" d="M74 1074 V1090"/>
+  <text class="legend" x="142" y="1088">= one</text>
+  <path class="relation" d="M240 1082 H300"/>
+  <path class="crowsfoot" d="M288 1082 L300 1073 M288 1082 L300 1082 M288 1082 L300 1091"/>
+  <text class="legend" x="312" y="1088">= many (crow's foot)</text>
+  <text class="subtitle" x="900" y="1088">Scope: no TRIPS table, trip count, GPS, or per-trip fare is loaded.</text>
+</svg>

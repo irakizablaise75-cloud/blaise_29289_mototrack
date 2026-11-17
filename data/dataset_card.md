@@ -13,6 +13,10 @@
 - Contributors: Martin Kitetu, Alois Mbutura, Halloran Stratford, MJ Booysen
 - Publisher: Mendeley Data, version 1, published 3 March 2025
 - Licence: CC BY 4.0
+- Format: CSV (UTF-8, comma-separated, one header row per file)
+- Size: 174,826 bytes total — baseline 94,693; transition-control 73,165; transition-treatment electric 4,934; source README 2,034
+- Collection period: 13 November 2023 – 21 December 2023 (baseline 13–26 Nov; transition 10–21 Dec)
+- Date retrieved: 7 November 2026 (files downloaded from the Mendeley Data record above)
 
 ## 2. Working data
 
@@ -29,26 +33,53 @@ The source group is assigned during loading from the staging table. It is requir
 
 ## 3. Fields and mapping
 
-All three source files contain `user_id`, `date`, `distance_km`, `duration_min`, `idle_time_min`, `revenue_kes`, and `maintenance_kes`.
+All three source files contain `user_id`, `date`, `distance_km`, `duration_min`, `idle_time_min`, `revenue_kes` and `maintenance_kes`. The two fuel files add three fuel fields; the electric file adds two electric fields. Every source field maps to exactly one target column.
 
-| Source field | Meaning | Handling |
-|---|---|---|
-| `user_id` | Anonymised rider identifier | Stored as `RIDERS.RIDER_CODE` |
-| `date` | Calendar day (`YYYY-MM-DD`) | Stored as `DAILY_OPERATIONS.OPERATING_DATE` |
-| `distance_km` | Daily distance in kilometres | Stored as a decimal measure |
-| `duration_min` | Daily travel duration in minutes | Stored as a decimal measure |
-| `idle_time_min` | Daily momentary-stop time in minutes | Stored as a decimal measure |
-| `revenue_kes` | Daily revenue in Kenyan shillings | Stored as a decimal measure; blanks remain NULL |
-| `maintenance_kes` | Daily maintenance total in Kenyan shillings | Stored as a decimal measure; blanks remain NULL |
-| `fuel_cost_kes` | Fuel cost in Kenyan shillings | Fuel groups only |
-| `fuel_unit_cost_kes_per_l` | Fuel price per litre | Fuel groups only |
-| `fuel_amount_l` | Daily fuel amount in litres | Fuel groups only |
-| `battery_swap_cost_kes` | Battery-swap cost in Kenyan shillings | Electric group only |
-| `kwh_charging` | Energy charged in kilowatt-hours | Electric group only |
+| Source field | Target (table.column) | Logical type | Meaning | Cleaning / conversion rule |
+|---|---|---|---|---|
+| `user_id` | `RIDERS.RIDER_CODE` | Text (identifier) | Anonymised rider identifier | Trim; insert distinct values once; daily rows link through the generated `rider_id` |
+| file name | `SOURCE_GROUP.GROUP_CODE` → `DAILY_OPERATIONS.SOURCE_GROUP` | Code (lookup FK) | Study group | Map each staging table to its fixed group code |
+| `date` | `DAILY_OPERATIONS.OPERATING_DATE` | Date | Calendar day | Parse as `YYYY-MM-DD`; flag values that do not match |
+| `distance_km` | `DAILY_OPERATIONS.DISTANCE_KM` | Numeric | Daily distance, km | Trim; blank → `NULL`; must be ≥ 0 |
+| `duration_min` | `DAILY_OPERATIONS.DURATION_MIN` | Numeric | Daily travel time, minutes | Trim; blank → `NULL`; must be ≥ 0 |
+| `idle_time_min` | `DAILY_OPERATIONS.IDLE_TIME_MIN` | Numeric | Momentary-stop time, minutes | Trim; blank → `NULL`; must be ≥ 0 |
+| `revenue_kes` | `DAILY_OPERATIONS.REVENUE_KES` | Numeric | Daily revenue, KES | Trim; blank → `NULL`; must be ≥ 0 |
+| `maintenance_kes` | `DAILY_OPERATIONS.MAINTENANCE_KES` | Numeric | Daily maintenance total, KES | Trim; blank → `NULL`; must be ≥ 0 |
+| `fuel_cost_kes` | `DAILY_OPERATIONS.FUEL_COST_KES` | Numeric | Fuel cost, KES | Fuel groups only; blank → `NULL` |
+| `fuel_unit_cost_kes_per_l` | `DAILY_OPERATIONS.FUEL_UNIT_COST_KES_PER_L` | Numeric | Fuel price, KES/litre | Fuel groups only; blank → `NULL` |
+| `fuel_amount_l` | `DAILY_OPERATIONS.FUEL_AMOUNT_L` | Numeric | Fuel used, litres | Fuel groups only; blank → `NULL` |
+| `battery_swap_cost_kes` | `DAILY_OPERATIONS.BATTERY_SWAP_COST_KES` | Numeric | Battery-swap cost, KES | Electric group only; blank → `NULL` |
+| `kwh_charging` | `DAILY_OPERATIONS.KWH_CHARGING` | Numeric | Energy charged, kWh | Electric group only; blank → `NULL` |
 
-The original daily files do **not** contain a trip count. MotoTrack does not import the trip-level files or derive trip counts from them.
+No source field maps to `SOURCE_GROUP` attributes, `MAINTENANCE_EVENTS`, `MAINTENANCE_TYPE` or `AUDIT_LOG`; those are seeded or populated by later application use and by the audit trigger. The original daily files do **not** contain a trip count, so MotoTrack does not import trip-level files or derive trip counts.
 
-## 4. Missing values
+**Cleaning checklist applied during the load (Phase IV):**
+
+1. Trim every text value and convert empty strings to `NULL` with `NULLIF(TRIM(column), '')`.
+2. Confirm each `date` matches `YYYY-MM-DD`; the three files contain no invalid or missing dates.
+3. Confirm every populated numeric value parses as a number; the three files contain no non-numeric values.
+4. Confirm no duplicate rows and no duplicate `(user_id, date)` pairs; the three files contain none.
+5. Seed the three `SOURCE_GROUP` rows before loading daily rows.
+6. Load distinct riders first, then upsert daily rows on `(rider_id, source_group, operating_date)`.
+7. Leave blank financial and energy fields as `NULL`; never substitute zero.
+
+## 4. Data quality check
+
+The raw files were profiled before any cleaning. Counts below are across all three files (2,718 rows combined).
+
+| Quality check | Result |
+|---|---:|
+| Duplicate rows (all columns) | 0 |
+| Duplicate `(user_id, date)` keys | 0 |
+| Missing `user_id` | 0 |
+| Missing `date` | 0 |
+| Invalid `date` format | 0 |
+| Non-numeric value in a numeric field | 0 |
+| Negative measure | 0 |
+
+No rows are removed at this stage. The only issues found are the expected blank values recorded below.
+
+### Missing values
 
 Blank numeric cells are loaded as `NULL` and are not replaced with zero.
 

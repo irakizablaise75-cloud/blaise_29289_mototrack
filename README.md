@@ -42,7 +42,9 @@ The working input is the three original daily CSVs stored in `data/raw/daily_dat
 ## Database Tables
 
 - `RIDERS` — one row per anonymised rider (`rider_code` unique)
+- `SOURCE_GROUP` — study-group lookup (phase, powertrain, control role, date range)
 - `DAILY_OPERATIONS` — one row per rider, source group and day (daily activity, revenue and fuel/electric/maintenance measures)
+- `MAINTENANCE_TYPE` — maintenance-category lookup
 - `MAINTENANCE_EVENTS` — optional event-level maintenance records
 - `AUDIT_LOG` — changes captured by the audit trigger
 - `STG_DAILY_BASELINE_FUEL`, `STG_DAILY_TRANSITION_FUEL`, `STG_DAILY_TRANSITION_ELECTRIC` — staging tables for the three source CSVs
