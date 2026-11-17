@@ -80,14 +80,18 @@ The project will use Microsoft Power BI to create interactive dashboards from th
 │       ├── 04_archive_log.sql
 │       └── 05_verify.sql
 ├── 01_documentation/
-│   ├── phase_0_research_and_proposal/
-│   │   ├── Phase0_Research_and_Proposal.pdf
-│   │   ├── presentation/
-│   │   │   ├── MotoTrack_Phase0_Presentation.pptx
-│   │   │   └── presentation_outline.md
-│   │   ├── proposal/proposal.md
-│   │   └── research/research_log.md
-│   └── phase_I_business_process_STUDENT_ONLY/
+│   ├── Phase0_Research_and_Proposal/
+│   │   └── Phase0_Research_and_Proposal.pdf
+│   ├── Phase1_Business_Process_Modeling/
+│   │   ├── BLAISE_BPMN_Swimlane.svg, .png, .pdf
+│   │   ├── BLAISE_BPMN_Swimlane_revised.svg, .png, .pdf
+│   │   ├── PHASE_I_BLAISE_BPMN_EXPLANATION.md, .pdf
+│   │   ├── Phase1_Business_Process_Modeling.pdf
+│   │   └── README_PHASE_I.txt
+│   ├── Phase2_Data_Sourcing_and_Normalization/
+│   │   └── Phase2_Data_Sourcing_and_Normalization.pdf
+│   └── Phase3_Database_Creation/
+│       └── Phase3_Database_Creation.pdf
 ├── 03_sql/
 │   ├── 01_schema/01_create_core_tables.sql
 │   ├── 02_staging/02_create_staging_tables.sql
@@ -96,6 +100,10 @@ The project will use Microsoft Power BI to create interactive dashboards from th
 │   ├── 05_triggers/05_create_audit_trigger.sql
 │   ├── 06_reports/06_create_views.sql
 │   └── 07_tests/
+│       ├── 07_plsql_feature_demo.sql
+│       ├── 07_validation_queries.sql
+│       ├── 08_package_test.sql
+│       └── 09_audit_trigger_test.sql
 ├── 06_submission/
 │   └── SUBMISSION_CHECKLIST.md
 ├── data/
@@ -104,11 +112,19 @@ The project will use Microsoft Power BI to create interactive dashboards from th
 │   │   └── daily_data/                   (daily source copy and README for provenance)
 │   └── raw/
 │       └── daily_data/                   (README and three CSV load inputs)
-└── docs/design/
-    ├── data_dictionary.md
-    ├── normalization.md
-    ├── phase_ii_checklist.md
-    └── erd.png, erd.svg
+└── docs/
+    ├── design/
+    │   ├── data_dictionary.md
+    │   ├── normalization.md
+    │   ├── phase_ii_checklist.md
+    │   └── erd.png, erd.svg
+    ├── presentation/
+    │   ├── MotoTrack_Phase0_Presentation.pptx
+    │   └── presentation_outline.md
+    ├── proposal/
+    │   └── proposal.md
+    └── research/
+        └── research_log.md
 ```
 
 ## Project Scope
