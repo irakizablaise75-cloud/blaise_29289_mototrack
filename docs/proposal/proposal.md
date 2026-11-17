@@ -29,14 +29,16 @@ The project uses all three daily summary files from the public Mendeley dataset 
 The database model includes the following tables:
 
 - `RIDERS`
+- `SOURCE_GROUP`
 - `DAILY_OPERATIONS`
+- `MAINTENANCE_TYPE`
 - `MAINTENANCE_EVENTS`
 - `AUDIT_LOG`
 - `STG_DAILY_BASELINE_FUEL` (staging)
 - `STG_DAILY_TRANSITION_FUEL` (staging)
 - `STG_DAILY_TRANSITION_ELECTRIC` (staging)
 
-These tables store rider details, one row per rider/source-group/day, optional event-level maintenance, changes for database auditing, and the three raw daily CSV imports.
+These tables store rider details, one row per rider/source-group/day, source-group and maintenance-type lookups, optional event-level maintenance, changes for database auditing, and the three raw daily CSV imports.
 
 ## Planned PL/SQL Features
 The project will demonstrate the following PL/SQL concepts:
