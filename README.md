@@ -78,8 +78,7 @@ The project will use Microsoft Power BI to create interactive dashboards from th
     ├── proposal/
     │   └── proposal.md
     └── presentation/
-        ├── MotoTrack_Phase0_Presentation.pptx
-        └── presentation_outline.md
+        └── MotoTrack_Phase0_Presentation.pptx
 ```
 
 Later phases add `database/`, `03_sql/`, `data/`, `docs/design/` and the phase documentation folders.
