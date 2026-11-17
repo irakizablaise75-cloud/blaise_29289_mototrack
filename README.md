@@ -34,7 +34,7 @@ The project uses the daily summary files from a public Mendeley Data dataset:
 *Nairobi Motorcycle Transit Comparison Dataset: Fuel vs. Electric Vehicle Performance Tracking (2023)*
 
 - DOI: `10.17632/nv3rkn24zv.1`
-- URL: https://data.mendeley.com/datasets/nv3rkn24zv
+- URL: https://doi.org/10.17632/nv3rkn24zv.1
 - Licence: CC BY 4.0
 
 The working input is the three original daily CSVs stored in `data/raw/daily_data/`: **2,718 rider-day records across the baseline, transition-control, and transition-electric groups**. The project does not load trip-level CSVs. The daily files include distance, duration, idle time, daily revenue and maintenance, plus fuel or electric energy costs where applicable. See `data/dataset_card.md` for counts, field mappings and NULL handling.
@@ -87,7 +87,7 @@ The project will use Microsoft Power BI to create interactive dashboards from th
         └── MotoTrack_Phase0_Presentation.pptx
 ```
 
-Later phases add `database/`, `03_sql/`, `data/`, `docs/design/` and the phase documentation folders.
+Later phases add `database/`, `03_sql/`, `docs/design/` and the phase documentation folders.
 
 ## Project Scope
 
@@ -103,8 +103,8 @@ This keeps the project realistic, easy to explain, and manageable within the cou
 
 ## References
 
-1. Ampersand Energy. (2025). *Ampersand opens battery network in push for global EV makers*. https://www.ampersand.energy/
-2. Kenya National Bureau of Statistics. (2022). *Economic Survey 2022*. Government of Kenya. https://www.knbs.or.ke/
+1. Ampersand Energy. (2025). *Ampersand opens battery network in push for global EV makers*. https://www.ampersand.energy/mediacentre/press-release%3A-ampersand-opens-battery-network-in-push-for-global-ev-makers
+2. Kenya National Bureau of Statistics. (2022). *Economic Survey 2022*. Government of Kenya. https://www.knbs.or.ke/reports/2022-economic-survey/
 3. Mbutura, A., Kitetu, M., Stratford, H., & Booysen, M. J. (2025). *Nairobi motorcycle transit comparison dataset: Fuel vs. electric vehicle performance tracking (2023)* [Data set]. Mendeley Data. https://doi.org/10.17632/nv3rkn24zv.1
 4. Mbutura, A., Manono, S., & Kitetu, M. (2026). From fuel to electric: Mobility patterns and perceptions of commercial motorcycle operators in Nairobi, Kenya, evidence from a before-and-after field study (2023). *African Transport Studies, 4*, 100092. https://doi.org/10.1016/j.aftran.2026.100092
 5. Oracle. (2023). *Oracle Database 21c documentation*. Oracle Corporation. https://docs.oracle.com/en/database/oracle/oracle-database/21/
