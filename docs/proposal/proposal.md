@@ -51,7 +51,7 @@ The project will demonstrate the following PL/SQL concepts:
 These features will support operational data validation, summarization, and reporting.
 
 ## Innovation
-The project contributes to practical business reporting by turning everyday ride and expense records into a structured database system. Instead of relying on scattered records, operators can use MotoTrack to review trip income, cost trends, and daily profitability in an organized and reliable format.
+The project will use Microsoft Power BI to create interactive dashboards from the Oracle reporting views. Operators will be able to review trip income, cost trends, and daily profitability in an organized and reliable format.
 
 ## References
 The project uses a public educational dataset; it represents Nairobi motorcycle-taxi operations and is not Rwanda-specific. See the dataset card and research log for full attribution, source details and limitations.

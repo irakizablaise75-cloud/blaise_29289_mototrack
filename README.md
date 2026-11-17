@@ -65,7 +65,7 @@ Use a clean project schema. Run the scripts in numbered order: create the core t
 
 ## Innovation
 
-The project turns everyday operating and expense summaries into a structured database system. Operators can review daily income, cost trends, per-kilometre cost, and profitability by study group in a consistent, queryable format, with an audit trail for accountability.
+The project will use Microsoft Power BI to create interactive dashboards from the Oracle reporting views. Operators will be able to review daily income, cost trends, per-kilometre cost, and profitability by study group.
 
 ## Repository Structure
 
