@@ -37,7 +37,7 @@ The project uses the daily summary files from a public Mendeley Data dataset:
 - URL: https://data.mendeley.com/datasets/nv3rkn24zv
 - Licence: CC BY 4.0
 
-The working input is the three original daily CSVs in `data/raw/daily_data/`: **2,718 rider-day records across the baseline, transition-control, and transition-electric groups**. The project does not load trip-level CSVs. The daily files include distance, duration, idle time, daily revenue and maintenance, plus fuel or electric energy costs where applicable. See `data/dataset_card.md` for counts, field mappings and NULL handling.
+The working input will be the three original daily CSVs: **2,718 rider-day records across the baseline, transition-control, and transition-electric groups**. The project does not load trip-level CSVs. The daily files include distance, duration, idle time, daily revenue and maintenance, plus fuel or electric energy costs where applicable. They are added under `data/raw/daily_data/` in Phase II, together with a dataset card for counts, field mappings and NULL handling.
 
 ## Database Tables
 
@@ -72,60 +72,17 @@ The project will use Microsoft Power BI to create interactive dashboards from th
 ```text
 .
 ├── README.md
-├── database/
-│   └── setup/
-│       ├── 01_create_pdb.sql
-│       ├── 02_create_user.sql
-│       ├── 03_tablespaces.sql
-│       ├── 04_archive_log.sql
-│       └── 05_verify.sql
-├── 01_documentation/
-│   ├── Phase0_Research_and_Proposal/
-│   │   └── Phase0_Research_and_Proposal.pdf
-│   ├── Phase1_Business_Process_Modeling/
-│   │   ├── BLAISE_BPMN_Swimlane.svg, .png, .pdf
-│   │   ├── BLAISE_BPMN_Swimlane_revised.svg, .png, .pdf
-│   │   ├── PHASE_I_BLAISE_BPMN_EXPLANATION.md, .pdf
-│   │   ├── Phase1_Business_Process_Modeling.pdf
-│   │   └── README_PHASE_I.txt
-│   ├── Phase2_Data_Sourcing_and_Normalization/
-│   │   └── Phase2_Data_Sourcing_and_Normalization.pdf
-│   └── Phase3_Database_Creation/
-│       └── Phase3_Database_Creation.pdf
-├── 03_sql/
-│   ├── 01_schema/01_create_core_tables.sql
-│   ├── 02_staging/02_create_staging_tables.sql
-│   ├── 03_data_loading/03_load_normalized_data.sql
-│   ├── 04_packages/04_pkg_mototrack_spec_body.sql
-│   ├── 05_triggers/05_create_audit_trigger.sql
-│   ├── 06_reports/06_create_views.sql
-│   └── 07_tests/
-│       ├── 07_plsql_feature_demo.sql
-│       ├── 07_validation_queries.sql
-│       ├── 08_package_test.sql
-│       └── 09_audit_trigger_test.sql
-├── 06_submission/
-│   └── SUBMISSION_CHECKLIST.md
-├── data/
-│   ├── dataset_card.md
-│   ├── original/
-│   │   └── daily_data/                   (daily source copy and README for provenance)
-│   └── raw/
-│       └── daily_data/                   (README and three CSV load inputs)
 └── docs/
-    ├── design/
-    │   ├── data_dictionary.md
-    │   ├── normalization.md
-    │   ├── phase_ii_checklist.md
-    │   └── erd.png, erd.svg
-    ├── presentation/
-    │   ├── MotoTrack_Phase0_Presentation.pptx
-    │   └── presentation_outline.md
+    ├── research/
+    │   └── research_log.md
     ├── proposal/
     │   └── proposal.md
-    └── research/
-        └── research_log.md
+    └── presentation/
+        ├── MotoTrack_Phase0_Presentation.pptx
+        └── presentation_outline.md
 ```
+
+Later phases add `database/`, `03_sql/`, `data/`, `docs/design/` and the phase documentation folders.
 
 ## Project Scope
 
