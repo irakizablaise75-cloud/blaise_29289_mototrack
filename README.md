@@ -9,11 +9,11 @@
 
 ## Problem Statement
 
-Motorcycle taxi operators often record trip income, fuel costs, and maintenance expenses in separate places, making it difficult to determine daily profitability and compare operating performance. In many cases, the information is not centralized, which limits the ability to monitor revenue, identify unusual expenses, and evaluate the financial performance of each rider or day. MotoTrack addresses this problem by providing a structured database system that stores daily ride and expense information in a clear, organized manner.
+Motorcycle taxi operators often record daily income, fuel costs, and maintenance expenses in separate places, making it difficult to determine daily profitability and compare operating performance. In many cases, the information is not centralized, which limits the ability to monitor revenue, identify unusual expenses, and evaluate the financial performance of each rider or day. MotoTrack addresses this problem by providing a structured database system that stores daily ride and expense information in a clear, organized manner.
 
 ## Objectives
 
-The main objective of this project is to design and implement a database system that helps motorcycle taxi operators record daily trip income, fuel costs, and maintenance expenses.
+The main objective of this project is to design and implement a database system that helps motorcycle taxi operators record daily income, fuel costs, and maintenance expenses.
 
 The specific objectives are to:
 
@@ -37,7 +37,7 @@ The project uses the daily summary files from a public Mendeley Data dataset:
 - URL: https://data.mendeley.com/datasets/nv3rkn24zv
 - Licence: CC BY 4.0
 
-The working input will be the three original daily CSVs: **2,718 rider-day records across the baseline, transition-control, and transition-electric groups**. The project does not load trip-level CSVs. The daily files include distance, duration, idle time, daily revenue and maintenance, plus fuel or electric energy costs where applicable. They are added under `data/raw/daily_data/` in Phase II, together with a dataset card for counts, field mappings and NULL handling.
+The working input is the three original daily CSVs stored in `data/raw/daily_data/`: **2,718 rider-day records across the baseline, transition-control, and transition-electric groups**. The project does not load trip-level CSVs. The daily files include distance, duration, idle time, daily revenue and maintenance, plus fuel or electric energy costs where applicable. See `data/dataset_card.md` for counts, field mappings and NULL handling.
 
 ## Database Tables
 
@@ -55,13 +55,13 @@ The working input will be the three original daily CSVs: **2,718 rider-day recor
 - SQL views `V_DAILY_PERFORMANCE`, `V_RIDER_SUMMARY`, `V_DAILY_TOTALS`, `V_MAINTENANCE_SUMMARY`
 - Validation and demonstration queries under `03_sql/07_tests/`
 
-## Oracle Environment Setup
+## Planned Oracle Environment Setup (Phase III)
 
-Run `database/setup/01_create_pdb.sql` through `05_verify.sql` in order using SQL*Plus or SQL Developer's script runner. The scripts expect Oracle Managed Files to be configured with `DB_CREATE_FILE_DEST`; run them as `SYSDBA` where indicated. Passwords are requested interactively and are not stored in the scripts. `04_archive_log.sql` switches to `CDB$ROOT`, reports the archive mode, and documents the required restart commands if archiving must be enabled. After setup, connect as `MOTOTRACK` and run the project scripts under `03_sql/` in order.
+In Phase III, run `database/setup/01_create_pdb.sql` through `05_verify.sql` in order using SQL*Plus or SQL Developer's script runner. The scripts expect Oracle Managed Files to be configured with `DB_CREATE_FILE_DEST`; run them as `SYSDBA` where indicated. Passwords are requested interactively and are not stored in the scripts. `04_archive_log.sql` switches to `CDB$ROOT`, reports the archive mode, and documents the required restart commands if archiving must be enabled. After setup, connect as `MOTOTRACK` and run the project scripts under `03_sql/` in order.
 
-## Daily Data Load
+## Planned Daily Data Load (Phase IV)
 
-Use a clean project schema. Run the scripts in numbered order: create the core tables, create the three staging tables, import each CSV from `data/raw/daily_data/` into its matching staging table, then run the daily load script. In SQL Developer, map source `user_id` to `rider_code` and `date` to `operating_date`. After loading, create the package, trigger, and views, then run the validation queries. The project uses only these daily source files.
+In Phase IV, use a clean project schema. Run the scripts in numbered order: create the core tables, create the three staging tables, import each CSV from `data/raw/daily_data/` into its matching staging table, then run the daily load script. In SQL Developer, map source `user_id` to `rider_code` and `date` to `operating_date`. After loading, create the package, trigger, and views, then run the validation queries. The project uses only these daily source files.
 
 ## Innovation
 
@@ -72,6 +72,12 @@ The project will use Microsoft Power BI to create interactive dashboards from th
 ```text
 .
 ├── README.md
+├── data/
+│   ├── dataset_card.md
+│   ├── original/
+│   │   └── daily_data/                   (source copy and README for provenance)
+│   └── raw/
+│       └── daily_data/                   (source README and three CSV load inputs)
 └── docs/
     ├── research/
     │   └── research_log.md

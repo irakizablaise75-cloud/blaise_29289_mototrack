@@ -8,10 +8,10 @@
 **Academic year:** 2026–2027
 
 ## Problem Statement
-Motorcycle taxi operators often record trip income, fuel costs, and maintenance expenses in separate places, making it difficult to determine daily profitability and compare operating performance. In many cases, the information is not centralized, which limits the ability to monitor revenue, identify unusual expenses, and evaluate the financial performance of each rider or day. MotoTrack addresses this problem by providing a structured database system that stores daily operating summaries and expenses in a clear and organized manner.
+Motorcycle taxi operators often record daily income, fuel costs, and maintenance expenses in separate places, making it difficult to determine daily profitability and compare operating performance. In many cases, the information is not centralized, which limits the ability to monitor revenue, identify unusual expenses, and evaluate the financial performance of each rider or day. MotoTrack addresses this problem by providing a structured database system that stores daily operating summaries and expenses in a clear and organized manner.
 
 ## Objectives
-The main objective of this project is to design and implement a database system that helps motorcycle taxi operators record daily trip income, fuel costs, and maintenance expenses. The specific objectives are to:
+The main objective of this project is to design and implement a database system that helps motorcycle taxi operators record daily income, fuel costs, and maintenance expenses. The specific objectives are to:
 
 1. Store rider and daily operating information in a structured relational database.
 2. Organize daily operational and financial data to improve data quality and reporting.
@@ -54,7 +54,7 @@ The project will demonstrate the following PL/SQL concepts:
 These features will support operational data validation, summarization, and reporting.
 
 ## Innovation
-The project will use Microsoft Power BI to create interactive dashboards from the Oracle reporting views. Operators will be able to review trip income, cost trends, and daily profitability in an organized and reliable format.
+The project will use Microsoft Power BI to create interactive dashboards from the Oracle reporting views. Operators will be able to review daily income, cost trends, and daily profitability in an organized and reliable format.
 
 ## References
 1. Ampersand Energy. (2025). *Ampersand opens battery network in push for global EV makers*. https://www.ampersand.energy/
