@@ -85,11 +85,17 @@ The project will use Microsoft Power BI to create interactive dashboards from th
     │   └── research_log.md
     ├── proposal/
     │   └── proposal.md
+    ├── design/
+    │   ├── normalization.md
+    │   ├── data_dictionary.md
+    │   ├── erd.svg
+    │   ├── erd.png
+    │   └── phase_ii_checklist.md
     └── presentation/
         └── MotoTrack_Phase0_Presentation.pptx
 ```
 
-Later phases add `database/`, `03_sql/`, `docs/design/` and the phase documentation folders.
+Later phases add `database/`, `03_sql/` and the phase documentation folders.
 
 ## Project Scope
 
