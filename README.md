@@ -57,9 +57,8 @@ The working input is the three original daily CSVs stored in `data/raw/daily_dat
 - SQL views `V_DAILY_PERFORMANCE`, `V_RIDER_SUMMARY`, `V_DAILY_TOTALS`, `V_MAINTENANCE_SUMMARY`
 - Validation and demonstration queries under `03_sql/07_tests/`
 
-## Planned Oracle Environment Setup (Phase III)
-
-In Phase III, run `database/setup/01_create_pdb.sql` through `05_verify.sql` in order using SQL*Plus or SQL Developer's script runner. The scripts expect Oracle Managed Files to be configured with `DB_CREATE_FILE_DEST`; run them as `SYSDBA` where indicated. Passwords are requested interactively and are not stored in the scripts. `04_archive_log.sql` switches to `CDB$ROOT`, reports the archive mode, and documents the required restart commands if archiving must be enabled. After setup, connect as `MOTOTRACK` and run the project scripts under `03_sql/` in order.
+## Oracle Environment Setup (Phase III)
+In Phase III, run `database/setup/01_create_pdb.sql` through `05_verify.sql` in order using SQL*Plus or SQL Developer's script runner. The PDB is `I_29289_BLAISE_MOTOTRACK_DB`; the PDB administrator is `BLAISE_ADMIN`. Run the scripts as `SYSDBA` where indicated. Passwords are requested interactively and are not stored in the scripts. For `04_archive_log.sql`, connect directly as `SYSDBA` to the CDB root service; the script reports the current archive mode and keeps enablement steps commented for local installations only. Do not change archive mode on the shared lab server. After setup, connect as `BLAISE_ADMIN` and run the project scripts under `03_sql/` in order.
 
 ## Planned Daily Data Load (Phase IV)
 
