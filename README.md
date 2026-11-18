@@ -57,9 +57,14 @@ The working input is the three original daily CSVs stored in `data/raw/daily_dat
 - SQL views `V_DAILY_PERFORMANCE`, `V_RIDER_SUMMARY`, `V_DAILY_TOTALS`, `V_MAINTENANCE_SUMMARY`
 - Validation and demonstration queries under `03_sql/07_tests/`
 
-## Planned Oracle Environment Setup (Phase III)
+## Phase III — Database Creation
 
-In Phase III, run `database/setup/01_create_pdb.sql` through `05_verify.sql` in order using SQL*Plus or SQL Developer's script runner. The scripts expect Oracle Managed Files to be configured with `DB_CREATE_FILE_DEST`; run them as `SYSDBA` where indicated. Passwords are requested interactively and are not stored in the scripts. `04_archive_log.sql` switches to `CDB$ROOT`, reports the archive mode, and documents the required restart commands if archiving must be enabled. After setup, connect as `MOTOTRACK` and run the project scripts under `03_sql/` in order.
+The Phase III submission files are at the repository root, in the exact locations required by the course:
+
+- `database/setup/` — numbered scripts `01_create_pdb.sql` through `05_verify.sql`
+- `screenshots/` — EM Express and query-output evidence, organized by task
+
+Run the scripts in order using SQL*Plus or SQL Developer's script runner, with the connection and privileges specified in each script. Connect directly to the CDB root as SYSDBA to run `04_archive_log.sql`; it reports the current archive mode and does not change it. Do not enable ARCHIVELOG on the shared lab server. The PDB is `I_29289_BLAISE_MOTOTRACK_DB` and its administrator is `BLAISE_ADMIN`.
 
 ## Planned Daily Data Load (Phase IV)
 
@@ -74,6 +79,20 @@ The project will use Microsoft Power BI to create interactive dashboards from th
 ```text
 .
 ├── README.md
+├── database/
+│   └── setup/
+│       ├── 01_create_pdb.sql
+│       ├── 02_create_user.sql
+│       ├── 03_tablespaces.sql
+│       ├── 04_archive_log.sql
+│       └── 05_verify.sql
+├── screenshots/
+│   ├── 01_pdb_creation/
+│   ├── 02_pdb_admin/
+│   ├── 03_tablespaces/
+│   ├── 04_archive_logging/
+│   ├── 05_em_express/
+│   └── 06_verification/
 ├── data/
 │   ├── dataset_card.md
 │   ├── original/
@@ -94,8 +113,6 @@ The project will use Microsoft Power BI to create interactive dashboards from th
     └── presentation/
         └── MotoTrack_Phase0_Presentation.pptx
 ```
-
-Later phases add `database/`, `03_sql/` and the phase documentation folders.
 
 ## Project Scope
 
