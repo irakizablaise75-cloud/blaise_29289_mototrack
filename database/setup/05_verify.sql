@@ -14,7 +14,7 @@ END;
 
 SET PAGESIZE 200;
 COLUMN pdb_name FORMAT A20;
-COLUMN connected_user FORMAT A20;
+COLUMN pdb_admin FORMAT A20;
 COLUMN captured_at FORMAT A20;
 COLUMN open_mode FORMAT A12;
 COLUMN username FORMAT A20;
@@ -24,7 +24,7 @@ COLUMN tablespace_name FORMAT A20;
 
 PROMPT === EVIDENCE TIMESTAMP ===
 SELECT SYS_CONTEXT('USERENV', 'CON_NAME') AS pdb_name,
-       USER AS connected_user,
+       'BLAISE_ADMIN' AS pdb_admin,
        TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') AS captured_at
 FROM dual;
 
