@@ -13,9 +13,8 @@ END;
 /
 
 SET PAGESIZE 200;
+COLUMN evidence FORMAT A70;
 COLUMN pdb_name FORMAT A20;
-COLUMN pdb_admin FORMAT A20;
-COLUMN captured_at FORMAT A20;
 COLUMN open_mode FORMAT A12;
 COLUMN username FORMAT A20;
 COLUMN default_tablespace FORMAT A20;
@@ -23,9 +22,8 @@ COLUMN temporary_tablespace FORMAT A20;
 COLUMN tablespace_name FORMAT A20;
 
 PROMPT === EVIDENCE TIMESTAMP ===
-SELECT SYS_CONTEXT('USERENV', 'CON_NAME') AS pdb_name,
-       'BLAISE_ADMIN' AS pdb_admin,
-       TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') AS captured_at
+SELECT SYS_CONTEXT('USERENV', 'CON_NAME') || ' BLAISE_ADMIN ' ||
+       TO_CHAR(SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI:SS') AS evidence
 FROM dual;
 
 PROMPT === PDB LIST ===
